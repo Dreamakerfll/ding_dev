@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>ding-service</artifactId>
+  <name>服务层</name>
+  <description>钉钉二次开发服务层</description>
+  <parent>
+  	<groupId>com.dreamaker</groupId>
+  	<artifactId>ding-root</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  	<relativePath>../ding-root</relativePath>
+  </parent>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.dreamaker</groupId>
+  		<artifactId>ding-domain</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.dreamaker</groupId>
+  		<artifactId>ding-dao</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+</project>
