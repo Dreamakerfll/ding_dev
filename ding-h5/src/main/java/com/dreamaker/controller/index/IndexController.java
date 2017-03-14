@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.dreamaker.domain.user.User;
+import com.dreamaker.service.redis.RedisService;
 import com.dreamaker.service.user.UserService;
-import com.dreamaker.util.RedisService;
 
 @Controller
 @RequestMapping("index")

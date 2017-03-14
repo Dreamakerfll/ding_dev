@@ -114,14 +114,14 @@
   </servlet-mapping> -->
   
   <!-- 添加一个过滤器获取所有请求的请求内容，一定要优先于druid过滤器 -->
-   <filter>
+   <!-- <filter>
     	<filter-name>allRequestResponse</filter-name>
     	<filter-class>com.dreamaker.filter.AllRequestResponseFilter</filter-class>
     </filter>
     <filter-mapping>
     	<filter-name>allRequestResponse</filter-name>
     	<url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> -->
   
     
   

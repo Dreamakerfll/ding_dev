@@ -7,6 +7,13 @@
   	<version>0.0.1-SNAPSHOT</version>
   	<relativePath>../ding-root</relativePath>
   </parent>
+  <repositories>
+  	<repository>
+  	<id>in-project</id>
+    <name>In Project Repo</name>
+    <url>file://${project.basedir}/src/ext_lib</url>
+  	</repository>
+  </repositories>
   <dependencies>
   <dependency>
     <groupId>com.fasterxml.jackson.core</groupId>
@@ -80,7 +87,7 @@
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>6.0.5</version>
+		    <version>5.1.41</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.alibaba</groupId>
@@ -129,5 +136,91 @@
     <version>4.3.5.RELEASE</version>
 </dependency>
 
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>fastjson</artifactId>
+    <version>1.2.28</version>
+</dependency>
+
+	<dependency>
+	    <groupId>com.ning</groupId>
+	    <artifactId>async-http-client</artifactId>
+	    <version>1.9.32</version>
+	</dependency>
+	<dependency>
+      <groupId>com.dingtalk.open</groupId>
+      <artifactId>client-sdk.api</artifactId>
+      <version>1.0.2</version>
+      <!-- <scope>system</scope>
+      <systemPath>${project.basedir}/src/ext_lib/client-sdk.api-1.0.2.jar</systemPath> -->
+    </dependency>
+    <dependency>
+      <groupId>com.dingtalk.open</groupId>
+      <artifactId>client-sdk.common</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <!-- <scope>system</scope>
+      <systemPath>${project.basedir}/src/ext_lib/client-sdk.common-1.0.0-SNAPSHOT.jar</systemPath> -->
+    </dependency>
+    <dependency>
+      <groupId>com.dingtalk.open</groupId>
+      <artifactId>client-sdk.core</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <!-- <scope>system</scope>
+      <systemPath>${project.basedir}/src/ext_lib/client-sdk.core-1.0.0-SNAPSHOT.jar</systemPath> -->
+    </dependency>
+    <dependency>
+      <groupId>com.dingtalk.open</groupId>
+      <artifactId>client-sdk.example</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <!-- <scope>system</scope>
+      <systemPath>${project.basedir}/src/ext_lib/client-sdk.example-1.0.0-SNAPSHOT.jar</systemPath> -->
+    </dependency>
+    <dependency>
+      <groupId>com.dingtalk.open</groupId>
+      <artifactId>client-sdk.spring</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <!-- <scope>system</scope>
+      <systemPath>${project.basedir}/src/ext_lib/client-sdk.spring-1.0.0-SNAPSHOT.jar</systemPath> -->
+    </dependency>
+
+
+
   </dependencies>
+  
+  <!-- <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <finalName>xxx-jar-with-dependencies</finalName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+     <resources>
+      <resource>
+        <targetPath>src/ext_lib/</targetPath>
+        <directory>src/ext_lib/</directory>
+        <includes>
+          <include>**/client-sdk.api-1.0.2.jar</include>
+          <include>**/client-sdk.common-1.0.0-SNAPSHOT.jar</include>
+          <include>**/client-sdk.core-1.0.0-SNAPSHOT.jar</include>
+          <include>**/client-sdk.example-1.0.0-SNAPSHOT.jar</include>
+          <include>**/client-sdk.spring-1.0.0-SNAPSHOT.jar</include>
+        </includes>
+      </resource>
+    </resources>
+  </build> -->
 </project>

@@ -23,7 +23,7 @@ public class SignatureController {
 	
 	@Scheduled(cron="0 0/3 * * * *")
 	private void process(){
-		log.info("定时任务运行！！");
+		log.info("测试定时任务运行！！每3分钟执行");
 	}
 
 }
