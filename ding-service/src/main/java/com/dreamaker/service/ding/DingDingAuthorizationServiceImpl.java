@@ -13,7 +13,7 @@ import com.dingtalk.open.client.api.service.corp.JsapiService;
 import com.dingtalk.open.client.api.service.isv.IsvService;
 import com.dreamaker.service.redis.RedisService;
 
-@Service
+@Service("dingDingAuthorizationService")
 public class DingDingAuthorizationServiceImpl implements DingDingAuthorizationService{
 
 	//定义相关Token的存活时间，定义2小时（7200） 为了解决服务器时间差异问题，本系统定义为1小时 40 分钟（6000）

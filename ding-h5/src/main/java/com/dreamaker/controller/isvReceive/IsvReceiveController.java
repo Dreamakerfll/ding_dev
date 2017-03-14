@@ -1,4 +1,4 @@
-package com.dreamaker.controller.isv;
+package com.dreamaker.controller.isvReceive;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
