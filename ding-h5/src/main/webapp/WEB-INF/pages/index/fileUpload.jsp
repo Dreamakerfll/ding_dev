@@ -8,6 +8,7 @@
 <script type="text/javascript" src="../libs/jquery-3.0.0.min.js"></script>
 </head>
 <body>
+	<h2>测试文件上传</h2>
     <form action="" enctype="multipart/form-data">
         <input type="text" name="filed1"/>
         <input type="text" name="filed2"/>
@@ -17,8 +18,7 @@
     </form>
     <button id="submit">提交文件</button>
     
-    <button id="updatePerson">更新数据</button>
-    
+    <h2>测试数据库缓存</h2>
     <div>
     	<div>查询条件</div>
     	id<input id="id_search"/>
@@ -51,9 +51,7 @@
     	<button id="deleteUser">删除用户</button>
     </div>
     
-    <div>
-    	<button id="testRedis">测试redis相关功能</button>
-    </div>
+    <h2>测试redis相关功能</h2>
     
     <div>
     	<div>设置库存</div>
