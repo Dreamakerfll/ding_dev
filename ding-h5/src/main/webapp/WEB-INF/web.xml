@@ -8,7 +8,7 @@
   	<param-name>contextConfigLocation</param-name>
   	<param-value>classpath*:/application.xml</param-value>
   </context-param> -->
-  <!-- 载入application.xml等文件 -->
+  <!-- 载入application.xml等文件，此处相关文件在DispatcherServlet引入-->
 	<!-- <listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener> -->
@@ -20,8 +20,8 @@
   </listener>
   
   
-  <!-- log4j 配置  开始 -->  
-	<context-param>  
+  <!-- log4j 配置  开始，此处使用logback日志系统，如果要恢复log4j请移除logback的依赖-->  
+	<!-- <context-param>  
 	    <param-name>log4jConfigLocation</param-name>  
 		<param-value>classpath:log4j.properties</param-value>  
 	</context-param>  
@@ -35,7 +35,7 @@
 	</context-param>  
 	<listener>  
 	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
-	</listener>  
+	</listener>   -->
 	<!-- log4j 配置  结束 -->  
 
   <!-- Character Encoding filter -->
@@ -91,7 +91,7 @@
   
   
     
-  <!-- 对客户端请求的静态资源如图片、JS文件等的请求交由默认的servlet进行处理 -->
+  <!-- 对客户端请求的静态资源如图片、JS文件等的请求交由默认的servlet进行处理 ，此处移交spring-mvc.xml mvc:default-servlet-handler 处理-->
   <!-- <servlet-mapping>
   	<servlet-name>default</servlet-name>
   	<url-pattern>*.html</url-pattern>

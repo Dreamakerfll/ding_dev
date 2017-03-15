@@ -12,7 +12,7 @@ import com.dreamaker.mq.producer.topic.TopicSender;
 
 /**
  * 
- * @author liang
+ * @author 
  * @description controller测试
  */
 @Controller
