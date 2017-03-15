@@ -25,17 +25,17 @@ dd.ready(function() {
         onSuccess: function(data) {
         },
         onFail: function(err) {
-            log.e(JSON.stringify(err));
+            console.log(JSON.stringify(err));
         }
     });
 //	 alert('dd.ready rocks!');
 
 	dd.runtime.info({
 		onSuccess : function(info) {
-			logger.e('runtime info: ' + JSON.stringify(info));
+			console.log('runtime info: ' + JSON.stringify(info));
 		},
 		onFail : function(err) {
-			logger.e('fail: ' + JSON.stringify(err));
+			console.log('fail: ' + JSON.stringify(err));
 		}
 	});
 	dd.ui.pullToRefresh.enable({
@@ -106,7 +106,7 @@ dd.ready(function() {
 
 				},
 				error : function(xhr, errorType, error) {
-					logger.e("yinyien:" + _config.corpId);
+					console.log("yinyien:" + _config.corpId);
 					alert(errorType + ', ' + error);
 				}
 			});

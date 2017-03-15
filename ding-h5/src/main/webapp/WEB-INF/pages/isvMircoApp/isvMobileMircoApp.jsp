@@ -55,14 +55,8 @@
 //在此拿到权限验证配置所需要的信息
 var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvMobileMircoAppConfig(request) %>;
 </script>
-<script type="text/javascript" src="../libs/zepto.js"></script>
-<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js">
-</script>
-<script type="text/javascript" src="../js/isvMobileMircoApp/logger.js">
-</script>
-<script type="text/javascript" src="../js/isvMobileMircoApp/demo.js">
- 
-</script>
+
+
 <script>
 function openLink(url){
 	dd.biz.util.openLink({
@@ -91,6 +85,16 @@ function openLink(url){
 		<span>UserId:</span>
 		<div id="userId" style="display:inline-block"></div>
 	</div> -->
+	
+	<script type="text/javascript" src="../libs/zepto.min.js"></script>
+<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js">
+</script>
+	<script type="text/javascript" src="../js/isvMobileMircoApp/logger.js">
+</script>
+<script type="text/javascript" src="../js/isvMobileMircoApp/demo.js?da=234234">
+ 
+</script>
+
 	<br>
 	<div style="padding-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;欢迎您：<div id="userName" style="display:inline-block;font-weight:bold"></div>&nbsp;成为钉钉开发者，您当前在钉钉的<code>userId</code>为：
 		<div id="userId" style="display:inline-block;font-weight:bold"></div> 。</div>

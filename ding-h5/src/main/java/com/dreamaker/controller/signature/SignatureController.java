@@ -34,9 +34,15 @@ public class SignatureController {
 	
 	public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	@Autowired
+	
 	public static DingDingAuthorizationService dingDingAuthorizationService;
 	
+	
+	@Autowired
+	public void setDingDingAuthorizationService(DingDingAuthorizationService dingDingAuthorizationService) {
+		SignatureController.dingDingAuthorizationService = dingDingAuthorizationService;
+	}
+
 	@RequestMapping("getSignature")
 	@ResponseBody
 	public String getSignature(HttpServletRequest request){
@@ -52,6 +58,8 @@ public class SignatureController {
 	public static String getIsvMobileMircoAppConfig(HttpServletRequest request) {
 		String urlString = request.getRequestURL().toString();
 		String queryString = request.getQueryString();
+		
+		urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvMobileMircoApp.jsp", "isvMircoApp/mobile");
 
 		// todo
 		String corpId = request.getParameter("corpid");
