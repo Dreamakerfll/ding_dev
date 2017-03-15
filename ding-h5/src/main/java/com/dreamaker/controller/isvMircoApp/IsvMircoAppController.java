@@ -27,8 +27,13 @@ public class IsvMircoAppController {
 	public DingDingAuthorizationService dingDingAuthorizationService;
 	
 	@RequestMapping("mobile")
-	public String goToPage(){
+	public String goToPageMobile(){
 		return "isvMircoApp/isvMobileMircoApp";
+	}
+	
+	@RequestMapping("pc")
+	public String goToPagePc(){
+		return "isvMircoApp/isvPcMircoApp";
 	}
 	
 	@RequestMapping("userinfo")

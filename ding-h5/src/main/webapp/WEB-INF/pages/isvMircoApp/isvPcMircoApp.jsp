@@ -10,50 +10,13 @@
 <meta content="telephone=no" name="format-detection"/>
 <meta content="yes" name="apple-touch-fullscreen"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
-<link type="text/css" rel="stylesheet" href="stylesheets/style.css" />
-    <style>
-        body {
-            background-color: white;
-        }
-        *{
-		padding: 0;
-		margin: 0;
-		}
-		ul {
-			list-style: none
-		}
-		li{
-			height: 70px;
-			padding: 10px;
-			border-bottom: 1px solid #ccc;
-			vertical-align: middle;
-		}
-        
-        .icon img {
-		height: 70px;
-		width: 70px;
-		}
-		.icon {
-			display: inline-block;
-			vertical-align: middle;
-			/*border: 1px solid #00ff00;*/
-		}
-		.text {
-		margin-left: 10px;
-		width: calc(100% - 50px);
-		display: inline-block;
-		text-align: left;
-		line-height: 70px;
-		vertical-align: middle;
-		} 
-    </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-<title>isv移动端微应用</title>
+<title>isvPc端微应用</title>
 <script type="text/javascript">
 //在此拿到权限验证配置所需要的信息
-var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvMobileMircoAppConfig(request) %>;
+var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvPcMircoAppConfig(request) %>;
 </script>
 
 
@@ -76,9 +39,9 @@ function openLink(url){
 <body >
 	
 	<script type="text/javascript" src="../libs/zepto.min.js"></script>
-<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js">
+<script type="text/javascript" src="http://g.alicdn.com/dingding/dingtalk-pc-api/2.3.1/index.js">
 </script>
-<script type="text/javascript" src="../js/isvMobileMircoApp/isvMobileMircoApp.js">
+<script type="text/javascript" src="../js/isvMobileMircoApp/isvPcMircoApp.js">
  
 </script>
 

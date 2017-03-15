@@ -100,7 +100,50 @@ public class SignatureController {
 				+ timeStamp + "',corpId:'" + corpId + "',agentid:'" + agentid+ "',appid:'" + appId + "'}";
 	}
 	
-	
+	public static String getIsvPcMircoAppConfig(HttpServletRequest request) {
+		String urlString = request.getRequestURL().toString();
+		String queryString = request.getQueryString();
+		
+		urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvPcMircoApp.jsp", "isvMircoApp/pc");
+
+		// todo
+		String corpId = request.getParameter("corpid");
+		String appId = request.getParameter("appid");
+
+		System.out.println(df.format(new Date())+
+				" getconfig,url:" + urlString + " query:" + queryString + " corpid:" + corpId + " appid:" + appId);
+
+		String queryStringEncode = null;
+		String url;
+		if (queryString != null) {
+			queryStringEncode = URLDecoder.decode(queryString);
+			url = urlString + "?" + queryStringEncode;
+		} else {
+			url = urlString;
+		}
+		System.out.println(url);
+		String nonceStr = "abcdefg";
+		long timeStamp = System.currentTimeMillis() / 1000;
+		String signedUrl = url;
+		String accessToken = null;
+		String ticket = null;
+		String signature = null;
+		String agentid = null;
+
+		try {
+			accessToken = dingDingAuthorizationService.getIsvAccessToken(Env.SUITE_CORP_ID,corpId);
+			ticket = dingDingAuthorizationService.getIsvJsTicket(Env.SUITE_CORP_ID,corpId);
+			signature = SignatureController.sign(ticket, nonceStr, timeStamp, signedUrl);
+			agentid = SignatureController.getAgentId(Env.SUITE_CORP_ID,corpId, appId);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "{jsticket:'" + ticket + "',signature:'" + signature + "',nonceStr:'" + nonceStr + "',timeStamp:'"
+				+ timeStamp + "',corpId:'" + corpId + "',agentid:'" + agentid+ "',appid:'" + appId + "'}";
+	}
 	
 	
 	

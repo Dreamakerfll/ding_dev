@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.util.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
