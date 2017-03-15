@@ -13,6 +13,9 @@
   	<module>../ding-domain</module>
   	<module>../ding-h5</module>
   	<module>../ding-service</module>
+
   	
+  	<module>../ding-rs</module>
+  	<module>../ding-job</module>
   </modules>
 </project>

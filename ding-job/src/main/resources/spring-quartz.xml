@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  					  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  
+  <!-- quartz的调度工厂 调度工厂只能有一个，多个调度任务在list中添加 -->
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+      <list>
+         <!-- 所有的调度列表-->
+        <ref local="startTrigger" />
+        <ref local="checkAccessToken"/>
+      </list>
+    </property>
+  </bean>
+  
+  <!--配置调度执行的触发的时间--><!-- 每到指定时间则触发一次 -->
+  <bean id="startTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+    <property name="jobDetail" ref="startScheduleDetail" />
+    <!--服务器启动多久后开始执行-->
+	<property name="startDelay" value="0" /> 
+	<!-- 两小时刷新一次 ， 单位：毫秒 -->
+	<property name="repeatInterval" value="700" />
+  </bean>
+  
+    
+  <!--配置调度执行的触发的时间--><!-- 每到指定时间则触发一次 -->
+  <bean id="checkAccessToken" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+    <property name="jobDetail" ref="checkAccessTokenScheduleDetail" />
+    <!--服务器启动多久后开始执行-->
+	<property name="startDelay" value="60000" /> 
+	<!-- 每分钟检测一次 ， 单位：毫秒 -->
+	<property name="repeatInterval" value="60000" />
+  </bean>
+  
+  <!--配置调度具体执行的方法-->
+  <bean id="startScheduleDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="startSchedule" />
+    <property name="targetMethod" value="getNewAccessToken" />
+    <property name="concurrent" value="false" />
+    <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+  </bean>
+  
+  <!--配置调度具体执行的方法-->
+  <bean id="checkAccessTokenScheduleDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="checkAccessTokenSchedule" />
+    <property name="targetMethod" value="checkAccessToken" />
+    <property name="concurrent" value="false" />
+    <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+  </bean>
+  
+  
+  <!-- 添加调度的任务bean 配置对应的class-->
+  <bean id="startSchedule" class="com.dreamaker.job.StartSchedule" />
+  <!-- 添加调度的任务bean 配置对应的class-->
+  <bean id="checkAccessTokenSchedule" class="com.dreamaker.job.StartSchedule" />
+  
+</beans>
