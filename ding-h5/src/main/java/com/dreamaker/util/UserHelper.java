@@ -126,6 +126,12 @@ public class UserHelper {
 		return response;
 	}
 	
+	public static String getUserInfo(String sns_token) throws Exception{
+		String url = "https://oapi.dingtalk.com/sns/getuserinfo?sns_token=" + sns_token;
+		JSONObject response = HttpHelper.httpGet(url);
+		return response.toJSONString();
+	}
+	
 	public static HashMap<Long, Long> toHashMap(JSONObject js)  
 	   {  
 		   if(js == null){

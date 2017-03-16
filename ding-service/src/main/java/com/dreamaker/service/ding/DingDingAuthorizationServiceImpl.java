@@ -1,6 +1,9 @@
 package com.dreamaker.service.ding;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +26,16 @@ public class DingDingAuthorizationServiceImpl implements DingDingAuthorizationSe
 	public static final long TOKEN_LIVE_TIME = 6000;
 	
 	//创建钉钉存放redis的key
-	public static final String TICKET= "DING:TICKET:";
-	public static final String PERMANENTCODE = "DING:PERMANENTCODE:";
-	public static final String ISVACCESSTOKEN = "DING:ISVACCESSTOKEN:";
-	public static final String ISVJSTICKET = "DING:ISVJSTICKET:";
-	public static final String ISVSSOACCESSTOKEN = "DING:ISVSSOACCESSTOKEN:";
-	public static final String ACCESSTOKEN = "DING:ACCESSTOKEN:";
-	public static final String JSTICKET = "DING:JSTICKET:";
-	public static final String SSOACCESSTOKEN = "DING:SSOACCESSTOKEN:";
+	public static final String TICKET= "DING:ISV:TICKET:";
+	public static final String PERMANENTCODE = "DING:ISV:PERMANENTCODE:";
+	public static final String ISVACCESSTOKEN = "DING:ISV:ISVACCESSTOKEN:";
+	public static final String ISVJSTICKET = "DING:ISV:ISVJSTICKET:";
+	public static final String ISVSSOACCESSTOKEN = "DING:ISV:ISVSSOACCESSTOKEN:";
+	public static final String ACCESSTOKEN = "DING:ENTERPRISE:ACCESSTOKEN:";
+	public static final String JSTICKET = "DING:ENTERPRISE:JSTICKET:";
+	public static final String SSOACCESSTOKEN = "DING:ENTERPRISE:SSOACCESSTOKEN:";
+	public static final String APPACCESSTOKEN = "DING:APP:ACCESSTOKEN:";
+	public static final String APPSNSTOKEN = "DING:APP:SNSTOKEN:";
 	
 	@Autowired
 	private RedisService<?,?> redisService;
@@ -501,6 +506,135 @@ public class DingDingAuthorizationServiceImpl implements DingDingAuthorizationSe
 		redisService.cleanLock(key);
 		
 		return ssoAccessToken;
+	}
+	
+	@Override
+	public String getAppAccessToken(String appId,String appSecret) {
+		String key = DingDingAuthorizationServiceImpl.APPACCESSTOKEN + appId;
+		
+		String appAccessToken = redisService.get(key);
+		if(StringUtils.isNotEmpty(appAccessToken)){
+			return appAccessToken;
+		}else{
+			if(redisService.existsLock(key)){
+				//等待其他线程完成
+				redisService.waitForLock(key);
+				
+				//从Redis 缓存中获取 appAccessToken
+				appAccessToken = redisService.get(key);
+				
+			}else{
+				//缓存过期，从服务器获取appAccessToken 并存储到 redis 中
+				appAccessToken = getAndPutAppAccessTokenToRedis(appId,appSecret);
+			}
+			
+			if(StringUtils.isEmpty(appAccessToken)){
+				appAccessToken = getAndPutAppAccessTokenToRedis(appId,appSecret);
+			}
+		}
+		
+		return appAccessToken;
+	}
+
+	private String getAndPutAppAccessTokenToRedis(String appId, String appSecret) {
+		String appAccessToken = "";
+		
+		String key = DingDingAuthorizationServiceImpl.APPACCESSTOKEN + appId;
+		
+		//存放锁
+		redisService.putLock(key);
+		
+		try {
+			
+			String url = "https://oapi.dingtalk.com/sns/gettoken?appid=" + appId + "&appsecret=" + appSecret;
+			JSONObject response = HttpHelper.httpGet(url);
+			if (response.containsKey("access_token")) {
+				// save appAccessToken
+				appAccessToken = response.getString("access_token");
+
+			} else {
+				throw new OApiResultException("app_access_token");
+			}
+			
+			if (StringUtils.isEmpty(appAccessToken)) {
+				throw new RuntimeException("get appAccessToken business error:");
+			}
+			
+		} catch (Exception e) {
+			throw new RuntimeException("get appAccessToken network error:"+e.getMessage());
+		}
+		
+		redisService.set(key , appAccessToken, DingDingAuthorizationServiceImpl.TOKEN_LIVE_TIME);
+		
+		redisService.cleanLock(key);
+		
+		return appAccessToken;
+	}
+
+	@Override
+	public String getAppSnsToken(String appAccessToken,String persistentCode, String openId) {
+		String key = DingDingAuthorizationServiceImpl.APPSNSTOKEN + openId;
+		
+		String appSnsToken = redisService.get(key);
+		if(StringUtils.isNotEmpty(appSnsToken)){
+			return appSnsToken;
+		}else{
+			if(redisService.existsLock(key)){
+				//等待其他线程完成
+				redisService.waitForLock(key);
+				
+				//从Redis 缓存中获取 appSnsToken
+				appSnsToken = redisService.get(key);
+				
+			}else{
+				//缓存过期，从服务器获取appSnsToken 并存储到 redis 中
+				appSnsToken = getAndPutAppSnsTokenToRedis(appAccessToken,persistentCode,openId);
+			}
+			
+			if(StringUtils.isEmpty(appSnsToken)){
+				appSnsToken = getAndPutAppSnsTokenToRedis(appAccessToken,persistentCode,openId);
+			}
+		}
+		
+		return appSnsToken;
+	}
+
+	private String getAndPutAppSnsTokenToRedis(String appAccessToken,String persistentCode, String openId) {
+		
+		String appSnsToken = "";
+		
+		String key = DingDingAuthorizationServiceImpl.APPSNSTOKEN + openId;
+		
+		//存放锁
+		redisService.putLock(key);
+		
+		try {
+			
+			String url = "https://oapi.dingtalk.com/sns/get_sns_token?access_token=" + appAccessToken;
+			Map<String,String> object = new HashMap<String,String>();
+			object.put("persistent_code", persistentCode);
+			object.put("openid", openId);
+			JSONObject response = HttpHelper.httpPost(url, object);
+			if (response.containsKey("sns_token")) {
+				// save appSnsToken
+				appSnsToken = response.getString("sns_token");
+			} else {
+				throw new OApiResultException("app_sns_token");
+			}
+			
+			if (StringUtils.isEmpty(appAccessToken)) {
+				throw new RuntimeException("get appSnsToken business error:");
+			}
+			
+		} catch (Exception e) {
+			throw new RuntimeException("get appSnsToken network error:"+e.getMessage());
+		}
+		
+		redisService.set(key , appSnsToken, DingDingAuthorizationServiceImpl.TOKEN_LIVE_TIME);
+		
+		redisService.cleanLock(key);
+		
+		return appSnsToken;
 	}
 
 }

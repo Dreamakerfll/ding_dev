@@ -32,4 +32,8 @@ public interface DingDingAuthorizationService {
 	
 	public String getSsoAccessToken(String corpId,String ssoSecret);
 	
+	public String getAppAccessToken(String appId,String appSecret);
+	
+	public String getAppSnsToken(String appAccessToken,String persistentCode,String openId);
+	
 }

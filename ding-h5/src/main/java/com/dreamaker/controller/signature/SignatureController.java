@@ -1,14 +1,15 @@
 package com.dreamaker.controller.signature;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Formatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,6 +146,41 @@ public class SignatureController {
 		return userinfo.toJSONString();
 	}
 	
+	public static String getNormalAuth(HttpServletRequest request) {
+		String userinfo = null;
+		String accessToken = null;
+
+		String code = request.getParameter("code");
+//		String server = "http://dreamaker.tunnel.qydev.com";
+//		String contentPath = request.getRequestURI();
+//		
+//		if(StringUtils.isEmpty(code)||code =="null"){
+//			try {
+//				System.out.println(server+contentPath);
+//				response.sendRedirect("https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid="+Env.APP_ID+"&response_type=code&scope=snsapi_login&state=STATE&redirect_uri="+server+contentPath);
+//				return "";
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+		JSONObject persistent_code_openid = null;
+		String sns_token = null;
+		try {
+			accessToken = dingDingAuthorizationService.getAppAccessToken(Env.APP_ID, Env.APP_SECRET);
+			persistent_code_openid = getPersistentCode(accessToken,code);
+			String persistent_code = persistent_code_openid.getString("persistent_code");
+			String openid = persistent_code_openid.getString("openid");
+			sns_token = dingDingAuthorizationService.getAppSnsToken(accessToken,persistent_code,openid);
+			userinfo = UserHelper.getUserInfo(sns_token);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return userinfo;
+	}
 	
 	
 	
@@ -179,9 +215,7 @@ public class SignatureController {
 	
 	
 	
-	
-	
-	public static String sign(String ticket, String nonceStr, long timeStamp, String url) throws OApiException {
+	private static String sign(String ticket, String nonceStr, long timeStamp, String url) throws OApiException {
 		String plain = "jsapi_ticket=" + ticket + "&noncestr=" + nonceStr + "&timestamp=" + String.valueOf(timeStamp)
 				+ "&url=" + url;
 		try {
@@ -206,7 +240,7 @@ public class SignatureController {
 		return result;
 	}
 	
-	public static String getAgentId(String suitCorpId,String corpId, String appId) throws OApiException {
+	private static String getAgentId(String suitCorpId,String corpId, String appId) throws OApiException {
 		String agentId = null;
 		
 		String ticket = dingDingAuthorizationService.getTicket(suitCorpId);
@@ -239,4 +273,35 @@ public class SignatureController {
 		}
 		return agentId;
 	}
+	
+	private static JSONObject getPersistentCode(String accessToken, String code) throws Exception{
+		long curTime = System.currentTimeMillis();
+		String persistentCode = "";
+		String openid = "";
+		String unionid = "";
+		JSONObject jsontemp = new JSONObject();
+
+		String url = "https://oapi.dingtalk.com/sns/get_persistent_code?access_token=" + accessToken;
+		Map<String,String> object = new HashMap<String,String>();
+		object.put("tmp_auth_code", code);
+		JSONObject response = HttpHelper.httpPost(url, object);
+		if (response.containsKey("persistent_code")) {
+			// save persistent_code
+			persistentCode = response.getString("persistent_code");
+			openid = response.getString("openid");
+			unionid = response.getString("unionid");
+			jsontemp.clear();
+			jsontemp.put("persistent_code", persistentCode);
+			jsontemp.put("begin_time", curTime);
+			jsontemp.put("openid", openid);
+			jsontemp.put("unionid", unionid);
+
+		} else {
+			throw new OApiResultException("persistent_code");
+		}
+
+		return jsontemp;
+	}
+	
+	
 }
