@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" import="java.util.*" contentType="text/html;charset=utf-8"%>
+<%@ page language="java" import="java.util.*,java.net.URLDecoder" contentType="text/html;charset=utf-8"%>
 <html>
 <head>
 <meta http-equiv=Content-Type content="text/html;charset=utf-8">
@@ -10,50 +10,29 @@
 <meta content="telephone=no" name="format-detection"/>
 <meta content="yes" name="apple-touch-fullscreen"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
-<link type="text/css" rel="stylesheet" href="stylesheets/style.css" />
-    <style>
-        body {
-            background-color: white;
-        }
-        *{
-		padding: 0;
-		margin: 0;
-		}
-		ul {
-			list-style: none
-		}
-		li{
-			height: 70px;
-			padding: 10px;
-			border-bottom: 1px solid #ccc;
-			vertical-align: middle;
-		}
-        
-        .icon img {
-		height: 70px;
-		width: 70px;
-		}
-		.icon {
-			display: inline-block;
-			vertical-align: middle;
-			/*border: 1px solid #00ff00;*/
-		}
-		.text {
-		margin-left: 10px;
-		width: calc(100% - 50px);
-		display: inline-block;
-		text-align: left;
-		line-height: 70px;
-		vertical-align: middle;
-		} 
-    </style>
-
+   
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
 <title>isv移动端微应用</title>
 <script type="text/javascript">
+//拿到当前页面的url
+<%
+	String url = null;
+	String urlString = request.getRequestURL().toString();
+	String queryString = request.getQueryString();
+	
+	urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvMobileMircoApp.jsp", "isvMircoApp/mobile");
+	
+	String queryStringEncode = null;
+	if (queryString != null) {
+		queryStringEncode = URLDecoder.decode(queryString,"UTF-8");
+		url = urlString + "?" + queryStringEncode;
+	} else {
+		url = urlString;
+	}
+%>
 //在此拿到权限验证配置所需要的信息
-var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvMobileMircoAppConfig(request) %>;
+var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvMircoAppConfig(request,url) %>;
 </script>
 
 
@@ -75,12 +54,9 @@ function openLink(url){
 
 <body >
 	
-	<script type="text/javascript" src="../libs/zepto.min.js"></script>
-<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js">
-</script>
-<script type="text/javascript" src="../js/isvMobileMircoApp/isvMobileMircoApp.js">
- 
-</script>
+<script type="text/javascript" src="../libs/zepto.min.js"></script>
+<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js"></script>
+<script type="text/javascript" src="../js/isvMircoApp/isvMobileMircoApp.js"></script>
 
 <br>
 <div style="padding-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;欢迎您：<div id="userName" style="display:inline-block;font-weight:bold"></div>&nbsp;成为钉钉开发者，您当前在钉钉的<code>userId</code>为：

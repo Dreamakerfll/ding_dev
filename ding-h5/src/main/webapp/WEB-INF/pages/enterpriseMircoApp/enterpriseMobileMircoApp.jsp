@@ -10,10 +10,10 @@
 <meta content="telephone=no" name="format-detection"/>
 <meta content="yes" name="apple-touch-fullscreen"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
-
+   
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-<title>isvPc端微应用</title>
+<title>企业移动端微应用</title>
 <script type="text/javascript">
 //拿到当前页面的url
 <%
@@ -21,7 +21,7 @@
 	String urlString = request.getRequestURL().toString();
 	String queryString = request.getQueryString();
 	
-	urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvPcMircoApp.jsp", "isvMircoApp/pc");
+	urlString = urlString.replaceAll("WEB-INF/pages/enterpriseMircoApp/enterpriseMobileMircoApp.jsp", "enterpriseMircoApp/mobile");
 	
 	String queryStringEncode = null;
 	if (queryString != null) {
@@ -31,9 +31,8 @@
 		url = urlString;
 	}
 %>
-
 //在此拿到权限验证配置所需要的信息
-var _config = <%= com.dreamaker.controller.signature.SignatureController.getIsvMircoAppConfig(request,url) %>;
+var _config = <%= com.dreamaker.controller.signature.SignatureController.getEnterpriseMircoAppConfig(request,url) %>;
 </script>
 
 
@@ -54,11 +53,10 @@ function openLink(url){
 </head>
 
 <body >
-	
-	<script type="text/javascript" src="../libs/zepto.min.js"></script>
-<script type="text/javascript" src="http://g.alicdn.com/dingding/dingtalk-pc-api/2.3.1/index.js">
-</script>
-<script type="text/javascript" src="../js/isvMircoApp/isvPcMircoApp.js"></script>
+	这里是企业微应用移动端页面
+<script type="text/javascript" src="../libs/zepto.min.js"></script>
+<script type="text/javascript" src="http://g.alicdn.com/ilw/ding/0.7.3/scripts/dingtalk.js"></script>
+<script type="text/javascript" src="../js/enterpriseMircoApp/enterpriseMobileMircoApp.js"></script>
 
 <br>
 <div style="padding-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;欢迎您：<div id="userName" style="display:inline-block;font-weight:bold"></div>&nbsp;成为钉钉开发者，您当前在钉钉的<code>userId</code>为：

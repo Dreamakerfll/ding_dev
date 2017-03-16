@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dreamaker.ding.env.Env;
 import com.dreamaker.service.ding.DingDingAuthorizationService;
+import com.dreamaker.util.UserHelper;
 import com.dreamaker.utils.HttpHelper;
 import com.dreamaker.utils.OApiException;
 import com.dreamaker.utils.OApiResultException;
@@ -55,27 +56,11 @@ public class SignatureController {
 	}
 	
 	
-	public static String getIsvMobileMircoAppConfig(HttpServletRequest request) {
-		String urlString = request.getRequestURL().toString();
-		String queryString = request.getQueryString();
-		
-		urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvMobileMircoApp.jsp", "isvMircoApp/mobile");
+	public static String getIsvMircoAppConfig(HttpServletRequest request,String url) {
 
-		// todo
 		String corpId = request.getParameter("corpid");
 		String appId = request.getParameter("appid");
 
-		System.out.println(df.format(new Date())+
-				" getconfig,url:" + urlString + " query:" + queryString + " corpid:" + corpId + " appid:" + appId);
-
-		String queryStringEncode = null;
-		String url;
-		if (queryString != null) {
-			queryStringEncode = URLDecoder.decode(queryString);
-			url = urlString + "?" + queryStringEncode;
-		} else {
-			url = urlString;
-		}
 		System.out.println(url);
 		String nonceStr = "abcdefg";
 		long timeStamp = System.currentTimeMillis() / 1000;
@@ -100,27 +85,26 @@ public class SignatureController {
 				+ timeStamp + "',corpId:'" + corpId + "',agentid:'" + agentid+ "',appid:'" + appId + "'}";
 	}
 	
-	public static String getIsvPcMircoAppConfig(HttpServletRequest request) {
-		String urlString = request.getRequestURL().toString();
-		String queryString = request.getQueryString();
-		
-		urlString = urlString.replaceAll("WEB-INF/pages/isvMircoApp/isvPcMircoApp.jsp", "isvMircoApp/pc");
+	public static String getIsvSsoMircoAppConfig(HttpServletRequest request,String url) {
 
-		// todo
-		String corpId = request.getParameter("corpid");
-		String appId = request.getParameter("appid");
+		JSONObject userinfo = null;
+		String accessToken = null;
 
-		System.out.println(df.format(new Date())+
-				" getconfig,url:" + urlString + " query:" + queryString + " corpid:" + corpId + " appid:" + appId);
+		String code = request.getParameter("code");
+		try {
+			accessToken = dingDingAuthorizationService.getIsvSsoAccessToken(Env.SUITE_CORP_ID, Env.SUITE_SSO_SECRET);
+			userinfo = UserHelper.getAgentUserInfo(accessToken,code);
 
-		String queryStringEncode = null;
-		String url;
-		if (queryString != null) {
-			queryStringEncode = URLDecoder.decode(queryString);
-			url = urlString + "?" + queryStringEncode;
-		} else {
-			url = urlString;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+		return userinfo.toJSONString();
+	}
+	
+	public static String getEnterpriseMircoAppConfig(HttpServletRequest request,String url) {
+
 		System.out.println(url);
 		String nonceStr = "abcdefg";
 		long timeStamp = System.currentTimeMillis() / 1000;
@@ -128,13 +112,11 @@ public class SignatureController {
 		String accessToken = null;
 		String ticket = null;
 		String signature = null;
-		String agentid = null;
 
 		try {
-			accessToken = dingDingAuthorizationService.getIsvAccessToken(Env.SUITE_CORP_ID,corpId);
-			ticket = dingDingAuthorizationService.getIsvJsTicket(Env.SUITE_CORP_ID,corpId);
-			signature = SignatureController.sign(ticket, nonceStr, timeStamp, signedUrl);
-			agentid = SignatureController.getAgentId(Env.SUITE_CORP_ID,corpId, appId);
+			accessToken = dingDingAuthorizationService.getAccessToken(Env.CORP_ID, Env.SECRET);
+			ticket = dingDingAuthorizationService.getJsTicket(Env.CORP_ID, Env.SECRET);
+			signature = sign(ticket, nonceStr, timeStamp, signedUrl);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -142,11 +124,26 @@ public class SignatureController {
 		}
 
 		return "{jsticket:'" + ticket + "',signature:'" + signature + "',nonceStr:'" + nonceStr + "',timeStamp:'"
-				+ timeStamp + "',corpId:'" + corpId + "',agentid:'" + agentid+ "',appid:'" + appId + "'}";
+				+ timeStamp + "',corpId:'" + Env.CORP_ID + "'}";
 	}
 	
 	
-	
+	public static String getEnterpriseSsoMircoAppConfig(HttpServletRequest request,String url) {
+
+		JSONObject userinfo = null;
+		String accessToken = null;
+
+		String code = request.getParameter("code");
+		try {
+			accessToken = dingDingAuthorizationService.getSsoAccessToken(Env.CORP_ID, Env.SSO_SECRET);
+			userinfo = UserHelper.getAgentUserInfo(accessToken,code);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return userinfo.toJSONString();
+	}
 	
 	
 	

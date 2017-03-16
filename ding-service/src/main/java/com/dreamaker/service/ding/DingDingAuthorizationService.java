@@ -24,4 +24,12 @@ public interface DingDingAuthorizationService {
 	
 	public String getIsvJsTicket(String suitCorpId,String corpId);
 	
+	public String getIsvSsoAccessToken(String suitCorpId,String suitSsoSecret);
+	
+	public String getAccessToken(String corpId,String corpSecret);
+	
+	public String getJsTicket(String corpId,String corpSecret);
+	
+	public String getSsoAccessToken(String corpId,String ssoSecret);
+	
 }

@@ -10,7 +10,7 @@ public class Env {
 	public static final String CORP_ID = "ding7bb1d74b2dc3614335c2f4657eb6378f";
 	
 	public static final String SECRET = "1dkZnXbHTRExhVBwcN8q2oq2I0pi6-9YLK1pvRz4oHNaqqwHfyUo6Vc9PTAw0sOc";
-	public static final String SSO_Secret = "OVe_WtK2pOnqi3rOW5MLCpadOWv3z0AL7OIzO03aiXU1EE3xw48CBwcL_9I1JO4U";
+	public static final String SSO_SECRET = "OVe_WtK2pOnqi3rOW5MLCpadOWv3z0AL7OIzO03aiXU1EE3xw48CBwcL_9I1JO4U";
 
 	
 	

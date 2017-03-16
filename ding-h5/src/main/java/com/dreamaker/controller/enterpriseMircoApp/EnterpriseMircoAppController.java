@@ -1,4 +1,4 @@
-package com.dreamaker.controller.isvMircoApp;
+package com.dreamaker.controller.enterpriseMircoApp;
 
 import java.io.IOException;
 
@@ -18,8 +18,8 @@ import com.dreamaker.service.ding.DingDingAuthorizationService;
 import com.dreamaker.util.UserHelper;
 
 @Controller
-@RequestMapping("isvMircoApp")
-public class IsvMircoAppController {
+@RequestMapping("enterpriseMircoApp")
+public class EnterpriseMircoAppController {
 	
 	Logger log = LoggerFactory.getLogger(getClass());
 	
@@ -28,17 +28,17 @@ public class IsvMircoAppController {
 	
 	@RequestMapping("mobile")
 	public String goToPageMobile(){
-		return "isvMircoApp/isvMobileMircoApp";
+		return "enterpriseMircoApp/enterpriseMobileMircoApp";
 	}
 	
 	@RequestMapping("pc")
 	public String goToPagePc(){
-		return "isvMircoApp/isvPcMircoApp";
+		return "enterpriseMircoApp/enterprisePcMircoApp";
 	}
 	
 	@RequestMapping("sso")
 	public String goToPageSso(){
-		return "isvMircoApp/isvSsoMircoApp";
+		return "enterpriseMircoApp/enterpriseSsoMircoApp";
 	}
 	
 	@RequestMapping("userinfo")
@@ -51,7 +51,7 @@ public class IsvMircoAppController {
 		try {
 			response.setContentType("text/html; charset=utf-8"); 
 
-			String accessToken = dingDingAuthorizationService.getIsvAccessToken(Env.SUITE_CORP_ID, corpId);
+			String accessToken = dingDingAuthorizationService.getAccessToken(Env.CORP_ID, Env.SECRET);
 			System.out.println("access token:"+accessToken);
 			
 			CorpUserDetail user = (CorpUserDetail)UserHelper.getUser(accessToken, UserHelper.getUserInfo(accessToken, code).getUserid());
