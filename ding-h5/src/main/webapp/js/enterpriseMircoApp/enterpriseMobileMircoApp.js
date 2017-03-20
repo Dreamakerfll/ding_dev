@@ -15,7 +15,7 @@ dd.config({
 			jsApiList : [ 'runtime.info', 'biz.contact.choose',
 					'device.notification.confirm', 'device.notification.alert',
 					'device.notification.prompt', 'biz.ding.post',
-					'biz.util.openLink' ]
+					'biz.util.openLink','biz.contact.departmentsPicker','biz.contact.complexPicker','biz.contact.createGroup' ]
 		});
 
 
@@ -86,6 +86,7 @@ dd.ready(function() {
 		corpId : _config.corpId,
 		onSuccess : function(info) {
 //			alert('authcode: ' + info.code);
+			console.log(info.code);
 			$.ajax({
 				url : 'userinfo?code=' + info.code + '&corpid='
 						+ _config.corpId,
