@@ -13,4 +13,6 @@ public interface UserService {
 	public int updateUserByCondition(User user);
 	
 	public int deleteUser(User user);
+	
+	public boolean updateAndDeleteUser(User user) throws Exception;
 }

@@ -83,6 +83,16 @@
     	<button id="goodDel">删除库存</button>
     </div>
     
+    
+    <div>
+    	<div>测试事务回滚，用户id为1报错回滚，其他用户正常</div>
+    	id<input id="id_rollback"/>
+    	name<input id="name_rollback"/>
+    	birthday<input id="birthday_rollback" type="datetime"/>
+    	area<input id="area_rollback"/>
+    	<button id="rollbackUser">测试事务</button>
+    </div>
+    
     <script>
     $(function(){
     	$('#submit').on('click',function(){
@@ -336,6 +346,29 @@
 
             });
         });
+    	
+    	$('#rollbackUser').on('click',function(){
+
+    		//获取页面的用户数据
+    		var id = $('#id_rollback').val();
+    		var name = $('#name_rollback').val();
+    		var birthday = $('#birthday_rollback').val();
+    		var area = $('#area_rollback').val();
+    		
+          $.ajax({
+              url: 'http://127.0.0.1/ding-h5/index/testRollBack',
+              type: 'post',
+              data: {"id":id,"name":name,"birthday":birthday,"area":area},
+              dataType : 'json',
+              success:function(data){
+                  console.log(data);
+              }
+              ,error:function(data){
+                  console.log(data);
+              }
+
+          });
+      });
     });
     
 

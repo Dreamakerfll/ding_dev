@@ -40,4 +40,20 @@ public class UserServiceImpl implements UserService{
 		return userDao.deleteUser(user);
 	}
 
+	@Override
+	public boolean updateAndDeleteUser(User user) throws Exception{
+		try {
+			userDao.updateUserByCondition(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new Exception("向外抛出异常");
+		}
+		if(user.getId() == 1){
+			throw new RuntimeException();
+		}
+		userDao.deleteUser(user);
+		return true;
+	}
+
 }

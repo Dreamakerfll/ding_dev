@@ -3,6 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xsi:schemaLocation="     
            http://www.springframework.org/schema/beans     
@@ -10,8 +11,15 @@
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
            http://www.springframework.org/schema/aop   
-           http://www.springframework.org/schema/aop/spring-aop-4.3.xsd"
+           http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-4.3.xsd "
            default-lazy-init="true">
+    
+    <!-- 不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在servlet-context中扫描过一遍了 -->  
+    <context:component-scan base-package="com.dreamaker">  
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>  
+    </context:component-scan> 
     
     <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->  
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
@@ -34,6 +42,8 @@
         <property name="dataSource" ref="dataSource" />  
     </bean>  
     
+     
+      
    <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <!-- 设置它的属性 -->
         <tx:attributes>
@@ -50,8 +60,22 @@
     
     <!-- <aop:config/> 的定义，确保由txAdvice bean定义的事务通知在应用中具体点被执行 -->
     <aop:config>
-        <aop:pointcut id="ServiceMethod" expression="execution(* com.dreamaker.service.*.*(..))"/>
+        <aop:pointcut id="ServiceMethod" expression="execution(* com.dreamaker.service..*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="ServiceMethod"/>
     </aop:config>
     
+     <!-- 配置druid监控spring jdbc -->
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>com.dreamaker.service.*</value>
+            </list>
+        </property>
+    </bean>
+     
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+    </aop:config>
 </beans>

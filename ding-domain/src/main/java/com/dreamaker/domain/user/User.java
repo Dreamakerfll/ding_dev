@@ -14,6 +14,8 @@ public class User implements Serializable{
 	private Date birthday;
 	private String area;
 	
+	private Sex sex;
+	
 	public long getId() {
 		return id;
 	}
@@ -38,43 +40,11 @@ public class User implements Serializable{
 	public void setArea(String area) {
 		this.area = area;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((area == null) ? 0 : area.hashCode());
-		result = prime * result + ((birthday == null) ? 0 : birthday.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+	public Sex getSex() {
+		return sex;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (area == null) {
-			if (other.area != null)
-				return false;
-		} else if (!area.equals(other.area))
-			return false;
-		if (birthday == null) {
-			if (other.birthday != null)
-				return false;
-		} else if (!birthday.equals(other.birthday))
-			return false;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+	public void setSex(Sex sex) {
+		this.sex = sex;
 	}
 	
 	

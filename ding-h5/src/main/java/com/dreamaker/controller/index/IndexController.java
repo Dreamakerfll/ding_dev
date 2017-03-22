@@ -117,9 +117,6 @@ public class IndexController {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}  
-		                       
-		                   
-		               		
 		                   }  
 		               }  
 		               //记录上传该文件后的时间  
@@ -258,6 +255,23 @@ public class IndexController {
 		redisService.closeConnection(conn);
 		
 		return "";
+	}
+	
+	
+	@RequestMapping("testRollBack")
+	@ResponseBody
+	public String testRollBack(HttpServletRequest request,User user){
+		
+		// 更新和删除用户
+		try {
+			userService.updateAndDeleteUser(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "回滚";
+		}
+		
+		return "成功";
 	}
 	
 	
