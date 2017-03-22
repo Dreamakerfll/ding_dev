@@ -1,0 +1,33 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+.top_info{
+	position: relative;
+	top:0;
+	width: 100%;
+	height: 30px;
+	background-color: #38adff;
+}
+
+.user_detail img{
+	float:left;
+}
+
+.user_name{
+	margin-left: 50px;
+	width: auto;
+	text-align: left;
+	line-height: 30px;
+	color: white;
+}
+
+.demo{
+	text-align: center;
+}
+
+.logo{
+	width:100%;
+	vertical-align: top;
+}

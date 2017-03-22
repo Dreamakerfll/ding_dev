@@ -11,8 +11,6 @@
 <meta content="yes" name="apple-touch-fullscreen"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
    
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-
 <title>企业移动端微应用</title>
 <script type="text/javascript">
 //拿到当前页面的url
@@ -34,6 +32,12 @@
 //在此拿到权限验证配置所需要的信息
 var _config = <%= com.dreamaker.controller.signature.SignatureController.getEnterpriseMircoAppConfig(request,url) %>;
 </script>
+<link rel="stylesheet" href="//g.alicdn.com/platform/tingle-ui/1.2.0/salt-ui.min.css">
+<link rel="stylesheet" href="../css/enterpriseMircoApp/enterpriseMobileMircoApp.css">
+<script src="//g.alicdn.com/platform/c/??zepto/1.1.6/zepto.min.js,react/0.14.3/react-with-addons.min.js,react/0.14.3/react-dom.min.js,react-router/2.0.0/umd/ReactRouter.min.js,fastclick/1.0.6/lib/fastclick.min.js,lie/3.0.2/dist/lie.polyfill.min.js,natty-db/1.0.2/dist/natty-db.min.js,reflux/0.3.0/dist/reflux.min.js"></script>
+<script type="text/javascript" src="http://g.alicdn.com/dingding/open-develop/1.0.0/dingtalk.js"></script>
+<script type="text/javascript" src="../js/enterpriseMircoApp/enterpriseMobileMircoApp.js"></script>
+
 
 
 <script>
@@ -53,28 +57,39 @@ function openLink(url){
 </head>
 
 <body >
-	这里是企业微应用移动端页面
-<script type="text/javascript" src="../libs/zepto.min.js"></script>
-<script type="text/javascript" src="http://g.alicdn.com/dingding/open-develop/1.0.0/dingtalk.js"></script>
-<script type="text/javascript" src="../js/enterpriseMircoApp/enterpriseMobileMircoApp.js"></script>
 
-<br>
-<div style="padding-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;欢迎您：<div id="userName" style="display:inline-block;font-weight:bold"></div>&nbsp;成为钉钉开发者，您当前在钉钉的<code>userId</code>为：
-	<div id="userId" style="display:inline-block;font-weight:bold"></div> 。</div>
-<div style="padding-left:10px;">&nbsp;&nbsp;&nbsp;&nbsp;我们为您提供了文档＋<code>api</code>帮助您快速的开发微应用并接入钉钉。</div>
-<div><a id = "openContant">打开企业通讯录</a></div>
-<div><a id = "openMement">选择部门，人员</a></div>
-<div><a id = "selectDepartment">选择部门</a></div>
-<div><a id = "createChat">创建聊天</a></div>
-<br>
+<!-- 解析器 -->
+<script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+
+<!-- saltui外部资源加载 -->
+<script src="//g.alicdn.com/platform/tingle-ui/1.2.0/salt-ui.min.js"></script>
+
+	<div id="top_info"></div>
+	<div id="logo_ijf"></div>
+	<div id="content_grid"></div>
+
+
  
+ <script src="../js/enterpriseMircoApp/enterpriseMobileMircoAppx.js" type="text/babel"></script>
  <script type="text/javascript">
 window.addEventListener('load', function() {
 	setTimeout(function(){
 	}, 500);
 });
 
-$('#openContant').on('click',function(){
+function getUser(){
+	dd.biz.user.get({
+        onSuccess: function (info) {
+            console.log('userGet success: ' + JSON.stringify(info));
+            alert(JSON.stringify(info));
+        },
+        onFail: function (err) {
+        	console.log('userGet fail: ' + JSON.stringify(err));
+        }
+    });
+	
+}
+function openContant(){
 	dd.biz.contact.choose({
 		  startWithDepartmentId: 0, //-1表示打开的通讯录从自己所在部门开始展示, 0表示从企业最上层开始，(其他数字表示从该部门开始:暂时不支持)
 		  multiple: true, //是否多选： true多选 false单选； 默认true
@@ -101,14 +116,17 @@ $('#openContant').on('click',function(){
 		  },
 		  onFail : function(err) {}
 		});
+}
+$('#openContant').on('click',function(){
+	openContant();
 });
 
-$('#openMement').on('click',function(){
+function openMement(){
 	dd.biz.contact.complexPicker({
 	    title:"选择部门",            //标题
 	    corpId: _config.corpId,             //企业的corpId
 	    multiple:true,            //是否多选
-	    limitTips:"超出了",          //超过限定人数返回提示
+	    limitTips:"超出了人数限制",          //超过限定人数返回提示
 	    maxUsers:3,            //最大可选人数
 	    pickedUsers:[],            //已选用户
 	    pickedDepartments:[],          //已选部门
@@ -130,9 +148,12 @@ $('#openMement').on('click',function(){
 	    },
 	   onFail : function(err) {}
 	});
+}
+$('#openMement').on('click',function(){
+	openMement();
 });
 
-$('#selectDepartment').on('click',function(){
+function selectDepartment(){
 	dd.biz.contact.departmentsPicker({
 	    title:"选择部门",            //标题
 	    corpId: _config.corpId,              //企业的corpId
@@ -157,9 +178,12 @@ $('#selectDepartment').on('click',function(){
 		   alert(JSON.stringify(err));
 	   }
 	});
+}
+$('#selectDepartment').on('click',function(){
+	selectDepartment();
 });
 
-$('#createChat').on('click',function(){
+function createChat(){
 	dd.biz.contact.createGroup({
 	    corpId: '', //企业id，可选，配置该参数即在指定企业创建群聊天
 	    users: [], //默认选中的用户工号列表，可选；使用此参数必须指定corpId
@@ -171,6 +195,9 @@ $('#createChat').on('click',function(){
 	    onFail: function(err) {
 	    }
 	});
+}
+$('#createChat').on('click',function(){
+	createChat();
 });
 </script>
  

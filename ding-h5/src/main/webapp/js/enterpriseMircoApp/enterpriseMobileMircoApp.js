@@ -15,13 +15,16 @@ dd.config({
 			jsApiList : [ 'runtime.info', 'biz.contact.choose',
 					'device.notification.confirm', 'device.notification.alert',
 					'device.notification.prompt', 'biz.ding.post',
-					'biz.util.openLink','biz.contact.departmentsPicker','biz.contact.complexPicker','biz.contact.createGroup' ]
+					'biz.util.openLink','biz.contact.departmentsPicker','biz.contact.complexPicker','biz.contact.createGroup',
+					'ui.pullToRefresh.disable','biz.user.get']
 		});
 
+var userInfo = {"active":true,"avatar":"","department":[1],"dingId":"$:LWCP_v1:$92PlFl9CqyALbbs0E+6qOA==","isAdmin":true,"isBoss":false,"isHide":false,"isLeaderInDepts":"{1:false}","jobnumber":"","mobile":"","name":"","orderInDepts":"{}","senior":false,"userid":""};
 
 dd.ready(function() {
+	
     dd.biz.navigation.setTitle({
-        title: '钉钉demo',
+        title: '不是不想胖',
         onSuccess: function(data) {
         },
         onFail: function(err) {
@@ -80,43 +83,42 @@ dd.ready(function() {
 			alert(JSON.stringify(err));
 		}
 	});
+	
+    dd.runtime.permission.requestAuthCode({
+        corpId : _config.corpId,
+        onSuccess : function(info) {
+//		alert('authcode: ' + info.code);
+            console.log(info.code);
+            $.ajax({
+                url : 'userinfo?code=' + info.code + '&corpid='
+                + _config.corpId,
+                type : 'GET',
+                success : function(data, status, xhr) {
+                    var info = JSON.parse(data);
+                    userInfo = info;
+                    //禁止下拉刷新
+                	dd.ui.pullToRefresh.disable();
+//                    this.state.userInfo = info;
+//
+//                    $('.user_name').html(info.name);
+//                    // 图片
+//                    if(info.avatar.length != 0){
+//                        $('.user_img').css({'background-image':'url('+info.avatar+')'});
+//                    }
 
+                },
+                error : function(xhr, errorType, error) {
+                    console.log("yinyien:" + _config.corpId);
+                    alert(errorType + ', ' + error);
+                }
+            });
 
-	dd.runtime.permission.requestAuthCode({
-		corpId : _config.corpId,
-		onSuccess : function(info) {
-//			alert('authcode: ' + info.code);
-			console.log(info.code);
-			$.ajax({
-				url : 'userinfo?code=' + info.code + '&corpid='
-						+ _config.corpId,
-				type : 'GET',
-				success : function(data, status, xhr) {
-					var info = JSON.parse(data);
+        },
+        onFail : function(err) {
+            alert('fail: ' + JSON.stringify(err));
+        }
+    });
 
-					document.getElementById("userName").innerHTML = info.name;
-					document.getElementById("userId").innerHTML = info.userid;
-					
-					// 图片
-//					if(info.avatar.length != 0){
-//			            var img = document.getElementById("userImg");
-//			            img.src = info.avatar;
-//			                      img.height = '100';
-//			                      img.width = '100';
-//			          }
-
-				},
-				error : function(xhr, errorType, error) {
-					console.log("yinyien:" + _config.corpId);
-					alert(errorType + ', ' + error);
-				}
-			});
-
-		},
-		onFail : function(err) {
-			alert('fail: ' + JSON.stringify(err));
-		}
-	});
 });
 
 dd.error(function(err) {
