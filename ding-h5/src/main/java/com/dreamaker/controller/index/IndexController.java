@@ -22,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.dreamaker.domain.user.User;
 import com.dreamaker.service.redis.RedisService;
+import com.dreamaker.service.user.UserHService;
 import com.dreamaker.service.user.UserService;
 
 @Controller
@@ -32,6 +33,9 @@ public class IndexController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserHService userHService;
 	
 	@Autowired
 	private RedisService<?,?> redisService;
@@ -275,5 +279,30 @@ public class IndexController {
 	}
 	
 	
+	@RequestMapping("insertUserH")
+	@ResponseBody
+	public String insertUserH(HttpServletRequest request,User user){
+		
+		
+		int row = userHService.insertUserH(user);
+		System.out.println(row);
+		return row+"";
+	}
+	
+	@RequestMapping(value="testRollBackH")
+	@ResponseBody
+	public String testRollBackH(HttpServletRequest request,User user){
+		
+		// 更新和删除用户
+		try {
+			userHService.updateAndDeleteUser(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "回滚";
+		}
+		
+		return "成功";
+	}
 
 }

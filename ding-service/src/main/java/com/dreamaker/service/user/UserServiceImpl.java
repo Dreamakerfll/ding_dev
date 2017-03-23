@@ -2,9 +2,10 @@ package com.dreamaker.service.user;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,7 +19,7 @@ public class UserServiceImpl implements UserService{
 	
 	Logger log = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
+	@Resource(name = "userDao")
 	private UserDao userDao;
 	
 	@Cacheable(key="'id_'+#user.getId()", value="userid")
@@ -55,5 +56,6 @@ public class UserServiceImpl implements UserService{
 		userDao.deleteUser(user);
 		return true;
 	}
+
 
 }

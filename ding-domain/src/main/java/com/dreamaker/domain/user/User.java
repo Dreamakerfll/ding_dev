@@ -3,18 +3,29 @@ package com.dreamaker.domain.user;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
 public class User implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="id")
 	private long id;
 	private String name;
 	private Date birthday;
 	private String area;
-	
-	private Sex sex;
 	
 	public long getId() {
 		return id;
@@ -39,12 +50,6 @@ public class User implements Serializable{
 	}
 	public void setArea(String area) {
 		this.area = area;
-	}
-	public Sex getSex() {
-		return sex;
-	}
-	public void setSex(Sex sex) {
-		this.sex = sex;
 	}
 	
 	

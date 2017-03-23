@@ -84,6 +84,17 @@
     <logger name="org.springframework.test">
         <level value="DEBUG" />
     </logger>
+    
+    <!-- #规避一个定时任务debug的异常 -->
+	<logger name="org.springframework.scheduling">
+        <level value="INFO" />
+    </logger>
+    <logger name="org.springframework.jms.listener">
+        <level value="INFO" />
+    </logger>
+    <logger name="org.springframework.data.redis.core">
+        <level value="INFO" />
+    </logger>
 
     <root level="DEBUG">
         <appender-ref ref="stdout" />

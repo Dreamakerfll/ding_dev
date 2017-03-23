@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="     
+           http://www.springframework.org/schema/beans     
+           http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+           http://www.springframework.org/schema/aop   
+           http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-4.3.xsd
+           http://www.springframework.org/schema/data/jpa 
+    	   http://www.springframework.org/schema/data/jpa/spring-jpa-1.8.xsd"
+           default-lazy-init="true">
+    
+    <!-- 不扫描带有@Controller注解的类。因为这些类已经随容器启动时，在servlet-context中扫描过一遍了 -->  
+    <context:component-scan base-package="com.dreamaker">  
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>  
+    </context:component-scan> 
+    
+   		<!-- Hibernate4 -->
+    <bean id="sessionFactory" 
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan">
+            <list>
+                <!-- 可以加多个包 -->
+                <value>com.dreamaker.domain</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <!--  <prop key="hibernate.current_session_context_class">thread</prop> --> 
+            </props>
+        </property>
+    </bean>
+    
+    <!-- 配置Hibernate事务管理器 -->
+    <bean id="transactionManager2"
+        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+      <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <!-- 配置事务异常封装 -->
+   <bean id="persistenceExceptionTranslationPostProcessor" 
+       class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+   
+   <!--  声明式容器事务管理 ,transaction-manager指定事务管理器为transactionManager -->
+    <tx:advice id="txAdvice2" transaction-manager="transactionManager2">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="get*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+            <tx:method name="*" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config expose-proxy="true">
+        <!-- 只对业务逻辑层实施事务 -->
+        <aop:pointcut id="txPointcut" expression="execution(* com.dreamaker.service..*.*(..))" />
+        <!-- Advisor定义，切入点和通知分别为txPointcut、txAdvice -->
+        <aop:advisor pointcut-ref="txPointcut" advice-ref="txAdvice2"/>
+    </aop:config>
+    
+    
+</beans>
