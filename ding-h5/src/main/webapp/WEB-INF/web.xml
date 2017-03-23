@@ -4,14 +4,14 @@
   
   
   
-  <context-param>
+  <!-- <context-param>
   	<param-name>contextConfigLocation</param-name>
   	<param-value>classpath*:/application.xml</param-value>
-  </context-param>
+  </context-param> -->
   <!-- 载入application.xml等文件，此处相关文件在DispatcherServlet引入-->
-	<listener>
+	<!-- <listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+	</listener> -->
 	
 	
 	<!-- 此监听器出用于主要为了解决java.beans.Introspector导致内存泄漏的问题 -->
@@ -78,7 +78,7 @@
   	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
   	<init-param>
   		<param-name>contextConfigLocation</param-name>
-  		<param-value>classpath:spring-mvc.xml,classpath:spring-cache.xml</param-value>
+  		<param-value>classpath:spring-*.xml</param-value>
   	</init-param>
   	<load-on-startup>1</load-on-startup>
   	

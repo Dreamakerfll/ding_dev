@@ -19,23 +19,30 @@
 			<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 			<!-- 配置ResponseBody返回数据编码格式 -->
 	        <bean class="org.springframework.http.converter.StringHttpMessageConverter">  
-	            <property name="supportedMediaTypes" value="text/plain;charset=UTF-8"></property>  
+	            <property name="supportedMediaTypes">  
+	                <list>  
+	                	<value>application/json;charset=UTF-8</value>  
+	                    <value>text/plain;charset=UTF-8</value>  
+	                    <value>text/html;charset=UTF-8</value>  
+	                </list>
+         		</property> 
 	        </bean>
 	        <!-- json 响应的 content-type 是 application/json，而 IE 10 以前的浏览器对于这个类型是作为文件下载的 ，避免IE执行AJAX时,返回JSON出现下载文件-->
 			<!-- 解决方法是只要将返回响应的 content-type 改为text/plain 即可 -->
-			<!-- <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
-			</bean> -->
+			</bean>
 	    </mvc:message-converters>
 	</mvc:annotation-driven>
+	
 	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理，3.04新增功能，需要重新设置spring-mvc-3.0.xsd -->
 	<mvc:default-servlet-handler/>
 	
 	<mvc:interceptors>
-		<mvc:interceptor>
+		<!-- <mvc:interceptor>
 			<mvc:mapping path="/**/*"/>
 			<bean class="com.dreamaker.interceptors.RequestInterceptor"></bean>
-		</mvc:interceptor>
+		</mvc:interceptor> -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**/*.do"/>
 			<bean class="com.dreamaker.interceptors.AuthInterceptor"></bean>

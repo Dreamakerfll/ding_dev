@@ -258,7 +258,7 @@ public class IndexController {
 	}
 	
 	
-	@RequestMapping("testRollBack")
+	@RequestMapping(value="testRollBack")
 	@ResponseBody
 	public String testRollBack(HttpServletRequest request,User user){
 		
