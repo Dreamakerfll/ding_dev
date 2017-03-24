@@ -10,7 +10,7 @@
 </cache>
   
   <select id="selectUserByCondition" resultMap="userMap" parameterType="com.dreamaker.domain.user.User">
-    select user.id as user_id,sex.id as sex_id,user.*,sex.* from user left join sex on user.sex = sex.key where 1=1 
+    select * from user where 1=1 
     <if test="id != null and id != ''">
     	and user.id = #{id}
     </if>
@@ -55,11 +55,6 @@
   	<result property="name" column="name"/>
   	<result property="birthday" column="birthday"/>
   	<result property="area" column="area"/>
-  	<association property="sex" javaType="com.dreamaker.domain.user.Sex">  
-  			<id property="id" column="sex_id"/> 
-            <result property="key" column="key"/>
-            <result property="value" column="value"/>
-    </association>
   </resultMap>
   
 </mapper>
