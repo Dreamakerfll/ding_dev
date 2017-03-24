@@ -27,7 +27,7 @@
    		<!-- Hibernate4 -->
     <bean id="sessionFactory" 
         class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource2" />
         <property name="packagesToScan">
             <list>
                 <!-- 可以加多个包 -->
