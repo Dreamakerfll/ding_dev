@@ -45,8 +45,7 @@
     </bean>
     
     <!-- 配置Hibernate事务管理器 -->
-    <bean id="transactionManager2"
-        class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <bean id="transactionManager2" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
       <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
@@ -64,6 +63,7 @@
             <tx:method name="*" read-only="true" />
         </tx:attributes>
     </tx:advice>
+    
     
     <aop:config expose-proxy="true">
         <!-- 只对业务逻辑层实施事务 -->

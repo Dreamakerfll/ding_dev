@@ -100,7 +100,6 @@
     	birthday<input id="birthday_insert_h" type="datetime"/>
     	area<input id="area_insert_h"/>
     	<button id="insertUserH">新增用户</button>
-<<<<<<< HEAD
     </div>
     
     
@@ -112,8 +111,6 @@
     	birthday<input id="birthday_rollback_h" type="datetime"/>
     	area<input id="area_rollback_h"/>
     	<button id="rollbackUserH">测试事务</button>
-=======
->>>>>>> branch 'master' of https://github.com/Dreamakerfll/ding_dev.git
     </div>
     
     <script>
@@ -414,7 +411,6 @@
               }
 
           });
-<<<<<<< HEAD
           
           
       });
@@ -444,9 +440,6 @@
       });
     	
     	
-=======
-      });
->>>>>>> branch 'master' of https://github.com/Dreamakerfll/ding_dev.git
     });
     
 

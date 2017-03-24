@@ -1,4 +1,4 @@
-package com.dreamaker.dao.user;
+package com.dreamaker.mybatis.dao.user;
 
 import java.util.List;
 
