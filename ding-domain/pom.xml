@@ -26,7 +26,7 @@
 <dependency>
     <groupId>org.springframework</groupId>
     <artifactId>spring-webmvc</artifactId>
-    <version>4.3.0.Release</version>
+    <version>4.3.0.RELEASE</version>
 </dependency>
     
 <dependency>
@@ -252,40 +252,4 @@
 
   </dependencies>
   
-  <!-- <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-              <finalName>xxx-jar-with-dependencies</finalName>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-     <resources>
-      <resource>
-        <targetPath>src/ext_lib/</targetPath>
-        <directory>src/ext_lib/</directory>
-        <includes>
-          <include>**/client-sdk.api-1.0.2.jar</include>
-          <include>**/client-sdk.common-1.0.0-SNAPSHOT.jar</include>
-          <include>**/client-sdk.core-1.0.0-SNAPSHOT.jar</include>
-          <include>**/client-sdk.example-1.0.0-SNAPSHOT.jar</include>
-          <include>**/client-sdk.spring-1.0.0-SNAPSHOT.jar</include>
-        </includes>
-      </resource>
-    </resources>
-  </build> -->
 </project>
